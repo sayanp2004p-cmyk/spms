@@ -1,0 +1,50 @@
+# Enable Rewrite Engine
+RewriteEngine On
+RewriteBase /student_register/
+
+# ==========================================
+# MAINTENANCE MODE
+# ==========================================
+
+# If maintenance.php exists and requested page is NOT maintenance.php or errors.php
+RewriteCond %{DOCUMENT_ROOT}/maintenance.php -f
+RewriteCond %{REQUEST_URI} !^/maintenance\.php$
+RewriteCond %{REQUEST_URI} !^/errors\.php$
+RewriteCond %{REQUEST_URI} !^/favicon\.ico$
+RewriteCond %{REQUEST_URI} !^/robots\.txt$
+
+# Allow CSS, JS, Images for maintenance page
+RewriteCond %{REQUEST_URI} !\.(css|js|jpg|jpeg|png|gif|svg|webp|ico)$ [NC]
+
+# Show maintenance page for everything else
+RewriteRule ^.*$ /maintenance.php [L]
+
+# ==========================================
+# NORMAL RULES
+# ==========================================
+
+# Redirect .php URLs to clean URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)\.php$ /$1 [R=301,L]
+
+# Internally rewrite clean URLs to .php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Directory index
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*)/$ $1/index.php [L]
+
+# ==========================================
+# ERROR DOCUMENTS
+# ==========================================
+
+ErrorDocument 400 /errors.php?error=400
+ErrorDocument 401 /errors.php?error=401
+ErrorDocument 403 /errors.php?error=403
+ErrorDocument 404 /errors.php?error=404
+ErrorDocument 500 /errors.php?error=500
+ErrorDocument 503 /errors.php?error=503

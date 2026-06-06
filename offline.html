@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Offline — No Internet</title>
+  <meta name="theme-color" content="#f6f8fb">
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#2563eb;--accent-600:#1d4ed8}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#111827}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:32px}
+    .card{background:var(--card);border-radius:12px;box-shadow:0 6px 24px rgba(17,24,39,0.06);padding:36px;max-width:520px;width:100%;text-align:center}
+    .icon{width:96px;height:96px;margin:0 auto 18px;display:block;color:#111827;opacity:0.95}
+    h1{font-size:20px;margin:6px 0 8px}
+    p{color:var(--muted);margin:0 0 20px}
+    .actions{display:flex;gap:12px;justify-content:center;margin-top:18px}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-retry{background:linear-gradient(180deg,var(--accent),var(--accent-600));color:#fff}
+    .btn-secondary{background:transparent;border:1px solid #e6e9ef;color:var(--muted)}
+    .spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);border-top-color:rgba(255,255,255,0.9);animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .small{font-size:13px;color:var(--muted);margin-top:12px}
+    a.link{color:var(--accent);text-decoration:none}
+    @media (max-width:420px){.card{padding:22px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="status" aria-live="polite">
+      <!-- Offline SVG icon (self-contained) -->
+      <svg class="icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="48" height="48" rx="12" fill="#eef2ff"/>
+        <g transform="translate(6,8)" fill="none" stroke="#374151" stroke-width="1.6">
+          <path d="M2 18a6 6 0 016-6h1.2a6 6 0 0111.6 0H26a6 6 0 010 12H4a4 4 0 01-2-7.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M30 2L2 30" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
+
+      <h1>You're offline</h1>
+      <p>We couldn't connect to the server. Check your network and try again.</p>
+
+      <div class="actions">
+        <button id="retryBtn" class="btn btn-retry" aria-live="polite">
+          <span id="retryContent">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M21 12a9 9 0 10-2.6 6.1L21 22v-4.9A8.9 8.9 0 0021 12z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Retry
+          </span>
+        </button>
+
+        <button id="helpBtn" class="btn btn-secondary" onclick="openLocalHelp()">Local Help</button>
+      </div>
+
+      <div class="small">Automatically reloads when connection returns. <a href="index.php" class="link">Go home</a></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const retryBtn = document.getElementById('retryBtn');
+      const retryContent = document.getElementById('retryContent');
+      const originalText = retryContent.innerHTML;
+
+      function setLoading(on){
+        retryBtn.disabled = on;
+        if(on){
+          retryContent.innerHTML = '<span class="spinner" aria-hidden="true"></span>';
+        } else {
+          retryContent.innerHTML = originalText;
+        }
+      }
+
+      function tryReconnect(){
+        setLoading(true);
+        if(navigator.onLine){
+          window.location.reload();
+          return;
+        }
+        // Try a fast HEAD request to same-origin (no external internet needed).
+        fetch(window.location.origin + window.location.pathname, {method:'HEAD', cache:'no-store'})
+          .then(res => {
+            // if fetch succeeded, reload
+            window.location.reload();
+          })
+          .catch(err => {
+            // still offline — stop spinner after a short delay
+            setTimeout(()=>setLoading(false), 900);
+          });
+        // safety timeout to avoid long spinner
+        setTimeout(()=>setLoading(false), 4000);
+      }
+
+      function openLocalHelp(){
+        // Open a local help page if present; otherwise open root
+        const possible = ['help.html','help.php','index.php'];
+        for(const p of possible){
+          try {
+            fetch(p, {method:'HEAD', cache:'no-store'}).then(r=>{
+              if(r.ok) location.href = p;
+            }).catch(()=>{});
+          } catch(e){}
+        }
+      }
+
+      retryBtn.addEventListener('click', tryReconnect);
+
+      // Auto-reload when browser detects online
+      window.addEventListener('online', ()=>{
+        tryReconnect();
+      });
+    })();
+  </script>
+</body>
+</html>
