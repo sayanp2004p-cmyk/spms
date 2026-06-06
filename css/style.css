@@ -1,0 +1,1051 @@
+/* ========================================
+   Student Payment Management System Styles
+   ======================================== */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css');
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-bg: #f8f9fa;
+    --white: #ffffff;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --box-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* ========== GENERAL STYLES ========== */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: #333;
+    line-height: 1.6;
+    padding-top: 70px; /* space for fixed navbar */
+}
+
+/* ========== NAVBAR (REUSABLE) ========== */
+.navbar-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: navbarDesktopIn 0.6s ease-out forwards;
+}
+
+.navbar-custom .navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-custom .navbar-brand img {
+    height: 34px;
+    width: 34px;
+    border-radius: 8px;
+    border: 2px solid rgba(0, 123, 255, 0.4);
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: #5a5a5a;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    transition: color 0.2s ease, transform 0.25s ease;
+}
+
+.navbar-custom .navbar-nav .nav-link i {
+    margin-right: 0.5rem;
+    width: 16px;
+    text-align: center;
+    display: none;
+}
+
+.navbar-custom .navbar-nav .nav-link:hover,
+.navbar-custom .navbar-nav .nav-link.active {
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.navbar-custom .navbar-toggler {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease;
+}
+
+.navbar-custom .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.navbar-custom .navbar-toggler-icon {
+    background-image: none;
+    width: 24px;
+    height: 18px;
+    position: relative;
+    display: block;
+}
+
+.navbar-custom .navbar-toggler-icon .bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.navbar-custom .navbar-toggler-icon .bar1 {
+    top: 0;
+}
+
+.navbar-custom .navbar-toggler-icon .bar2 {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.navbar-custom .navbar-toggler-icon .bar3 {
+    bottom: 0;
+}
+
+.navbar-custom .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon .bar1 {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.navbar-custom .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon .bar2 {
+    opacity: 0;
+}
+
+.navbar-custom .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon .bar3 {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+@keyframes navbarDesktopIn {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes navbarMobileIn {
+    from { transform: translateY(-12px) scale(0.97); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Mobile sidebar overlay */
+.navbar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 1045;
+}
+
+.navbar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-custom {
+        animation: navbarMobileIn 0.55s ease-out forwards;
+        border-bottom: none;
+    }
+
+    /* Side drawer nav */
+    .navbar-custom .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        max-width: 90%;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 2px 0 18px rgba(0, 0, 0, 0.18);
+        padding-top: 70px;
+        transform: translateX(-105%);
+        transition: transform 0.25s ease;
+        overflow-y: auto;
+        z-index: 1055;
+    }
+
+    .navbar-custom .navbar-collapse.show {
+        transform: translateX(0);
+    }
+
+    .navbar-custom .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .navbar-custom .navbar-nav .nav-link {
+        padding: 0.75rem 0;
+        font-size: 1.05rem;
+    }
+
+    .navbar-custom .navbar-nav .nav-link i {
+        margin-right: 0.75rem;
+        width: 18px;
+        display: inline-block;
+    }
+}
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ========== CARDS ========== */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+    background-color: var(--white);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3) !important;
+    color: white !important;
+    border: none;
+    padding: 1.25rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+    border-radius: 8px;
+    padding: 0.65rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #003d82);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    color: white;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #218838, #1aa085);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger-color), #e74c3c);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #c82333, #d73b39);
+}
+
+/* ========== FORMS ========== */
+.form-control {
+    border-radius: 8px;
+    border: 1.5px solid #e0e0e0;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.input-group .form-control {
+    border-right: none;
+}
+
+.input-group .input-group-text {
+    background-color: var(--light-bg);
+    border: 1.5px solid #e0e0e0;
+    border-left: none;
+}
+
+/* ========== TABLES ========== */
+.table {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: white;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--primary-color), #86b9f0);
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 1.25rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table tbody td {
+    border-color: #f0f0f0;
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes float {
+    0%, 100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes grow {
+    from {
+        height: 0;
+    }
+    to {
+        height: var(--height);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== BADGES ========== */
+.badge {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-primary {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    color: white;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, var(--danger-color), #e74c3c);
+    color: white;
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, var(--warning-color), #e0a800);
+    color: #333;
+}
+
+.badge-sm {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+/* ========== PROGRESS BARS ========== */
+.progress {
+    height: 8px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+.progress-bar-success {
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+}
+
+/* ========== STATUS ITEMS ========== */
+.status-item {
+    padding: 1rem;
+    border-radius: 8px;
+    background: var(--light-bg);
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.status-item i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    color: var(--primary-color);
+}
+
+.status-item:hover {
+    background: white;
+    box-shadow: var(--box-shadow);
+    transform: translateX(4px);
+}
+
+.status-item.success {
+    border-left-color: var(--success-color);
+}
+
+.status-item.success i {
+    color: var(--success-color);
+}
+
+.status-item.danger {
+    border-left-color: var(--danger-color);
+}
+
+.status-item.danger i {
+    color: var(--danger-color);
+}
+
+/* ========== FILTERS ========== */
+.filter-content {
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+}
+
+.filter-toggle-btn {
+    transition: all 0.3s ease;
+}
+
+.filter-toggle-btn:hover {
+    background-color: var(--light-bg);
+}
+
+#filterIcon {
+    transition: transform 0.3s ease;
+}
+
+#filterIcon.expanded {
+    transform: rotate(180deg);
+}
+
+.progress-circle {
+    position: relative;
+}
+
+.activity-bar {
+    animation: grow 2s ease-in-out;
+}
+
+@keyframes grow {
+    from { height: 0; }
+    to { height: var(--height); }
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+/* ========== MODERN ACTION CARDS ========== */
+.action-card-modern {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.action-card-modern::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+.action-card-modern:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+
+.action-card-modern i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.action-card-modern h5 {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.action-card-modern p {
+    font-size: 0.95rem;
+    opacity: 0.95;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* ========== STAT CARDS ========== */
+.stat-card-modern {
+    background: linear-gradient(135deg, var(--white), #f8f9fa);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card-modern::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(0, 123, 255, 0.05), transparent 70%);
+    border-radius: 50%;
+}
+
+.stat-card-modern:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--box-shadow-hover);
+    border-color: var(--primary-color);
+}
+
+.stat-card-modern .stat-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-card-modern .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-card-modern .stat-label {
+    font-size: 0.95rem;
+    color: #666;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ========== METRIC CARDS ========== */
+.metric-card-modern {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+
+.metric-card-modern:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+/* ========== HERO SECTION ========== */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: var(--border-radius);
+    padding: 4rem 3rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+}
+
+.hero-section .hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.hero-section p {
+    font-size: 1.15rem;
+    opacity: 0.95;
+    margin-bottom: 2rem;
+}
+
+.gradient-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+}
+
+.gradient-btn:hover {
+    background: linear-gradient(135deg, #218838 0%, #1aa085 100%);
+    transform: translateY(-2px);
+}
+
+/* Collapsible Filter Styles */
+.filter-content {
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+}
+
+.card-header[onclick] {
+    transition: background-color 0.2s ease;
+}
+
+.card-header[onclick]:hover {
+    background-color: rgba(0,123,255,0.05) !important;
+}
+
+#filterToggleBtn {
+    transition: transform 0.2s ease;
+}
+
+#filterToggleBtn:hover {
+    transform: scale(1.1);
+}
+
+#filterIcon {
+    transition: transform 0.3s ease;
+}
+
+.badge {
+    font-size: 0.8em;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Global spinner styles */
+.global-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    transition: opacity 0.2s ease;
+}
+.global-spinner[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+}
+.global-spinner[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+}
+.global-spinner .spinner-inner {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.global-spinner img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+/* Main content styles */
+.main-content {
+    padding: 20px;
+}
+
+@media (max-width: 991.98px) {
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+/* Dashboard Advanced Styling */
+.welcome-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    50% { transform: translate(-50%, -50%) rotate(180deg); }
+}
+
+.welcome-hero .hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.action-card {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.action-card .card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.action-card h5 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.action-card p {
+    opacity: 0.8;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.stat-card .stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.5rem;
+}
+
+.stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .stat-label {
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.8rem;
+}
+
+.progress-bar-custom {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e9ecef;
+}
+
+.progress-bar-custom .progress-bar {
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+.hover-lift {
+    transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.gradient-icon {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-icon-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.quick-stat-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.quick-stat-item:last-child {
+    border-bottom: none;
+}
+
+.status-item {
+    padding: 0.5rem 0;
+}
+
+.status-item i {
+    font-size: 0.9rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    border: none;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    border: none;
+    vertical-align: middle;
+}
+
+/* Enhanced badge styles */
+.badge {
+    font-size: 0.75em;
+    font-weight: 500;
+    padding: 0.375em 0.75em;
+    border-radius: 20px;
+}
+
+/* Responsive adjustments for dashboard */
+@media (max-width: 768px) {
+    .welcome-hero {
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .action-card {
+        margin-bottom: 1rem;
+    }
+
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .hero-stats {
+        margin-top: 1.5rem;
+    }
+
+    .hero-stats .col-6 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* System Status Enhancements */
+.status-item {
+    padding: 0.5rem 0;
+    transition: all 0.2s ease;
+}
+
+.status-item:hover {
+    background-color: rgba(0,0,0,0.02);
+    border-radius: 4px;
+    padding-left: 0.5rem;
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+
+.badge-sm {
+    font-size: 0.7em;
+    padding: 0.25em 0.5em;
+}
+
+.btn-outline-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,123,255,0.3);
+}
+
+/* Loading animation for refresh button */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Status transition effects */
+.status-transition {
+    transition: all 0.3s ease;
+}
+
+/* PWA styles removed */
